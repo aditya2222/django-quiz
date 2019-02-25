@@ -1,3 +1,4 @@
+import django_heroku
 import dj_database_url
 from django.core.urlresolvers import reverse_lazy
 """
@@ -82,22 +83,15 @@ WSGI_APPLICATION = 'quiz.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'quizdb',
-#         'HOST' : 'localhost',
-#         'USER' : 'root',
-#         'PORT' : '3306',
-#         'PASSWORD' : 'naveen700'
-#     }
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'quizdb',
+#        'HOST' : 'localhost',
+#        'USER' : 'root',
+#        'PORT' : '3306',
+#        'PASSWORD' : 'naveen700'
+#    }
 # }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mydatabase',
-    }
-}
 
 # DATABASES = {
 #     'default': {
@@ -110,6 +104,12 @@ DATABASES = {
 #     }
 # }
 
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=('postgres://glkgquczmvbrbm:a01ed6c5b4ad6b577952c6891811ab11e6176fc22f82810ae78c058da61d4d02@ec2-23-21-165-188.compute-1.amazonaws.com:5432/dbmvmn6gqnnc02')
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -148,9 +148,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
-
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
@@ -163,3 +160,5 @@ STATICFILES_DIRS = (
 
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+django_heroku.settings(locals())
